@@ -1,5 +1,5 @@
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class task4 {
@@ -21,12 +21,13 @@ public class task4 {
         List<String[]> list = new ArrayList<>();
         Map<String, Integer> inTimeMap = new HashMap<>();
         Map<String, Integer> outTimeMap = new HashMap<>();
+        File file = new File(inputFilePath);
 
         try {
-            Scanner scanner = new Scanner(new File(inputFilePath));
+            Scanner scanner = new Scanner(file);
 
             if (!scanner.hasNext()) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл \"" + file.getName() + "\" пуст");
                 return null;
             }
 
@@ -34,14 +35,14 @@ public class task4 {
                 String newLine = scanner.nextLine();
 
                 if (newLine.isEmpty()) {
-                    System.out.println("В файле пустая строка");
+                    System.out.println("В файле \""  + file.getName() + "\" пустая строка");
                     return null;
                 }
 
                 String[] newLineColumns = newLine.split(" ");
 
                 if (newLineColumns.length < 2) {
-                    System.out.println("В файле меньше 2х столбцов");
+                    System.out.println("В файле \""  + file.getName() + "\" меньше 2х столбцов");
                     return null;
                 }
 
@@ -53,8 +54,11 @@ public class task4 {
             }
 
             scanner.close();
-        } catch (IOException e) {
-            System.out.println("Ошибка чтения файла");
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл \"" + file.getName() + "\" по указанному пути не найден");
+            return null;
+        } catch (Exception e) {
+            System.out.println("Ошибка чтения файла \"" + file.getName() + "\"");
             return null;
         }
 

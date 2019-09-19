@@ -1,5 +1,5 @@
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -8,7 +8,7 @@ public class task2 {
 
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("Не указан путь к входному файлу");
+            System.out.println("Не указан путь к входным файлам");
             return;
         }
 
@@ -46,12 +46,13 @@ public class task2 {
 
     private static List<Point> readInputFile(String inputFilePath) {
         List<Point> points = new ArrayList<>();
+        File file = new File(inputFilePath);
 
         try {
-            Scanner scanner = new Scanner(new File(inputFilePath));
+            Scanner scanner = new Scanner(file);
 
             if (!scanner.hasNext()) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл \"" + file.getName() + "\" пуст");
                 return null;
             }
 
@@ -59,14 +60,14 @@ public class task2 {
                 String newLine = scanner.nextLine();
 
                 if (newLine.isEmpty()) {
-                    System.out.println("В файле пустая строка");
+                    System.out.println("В файле \""  + file.getName() + "\" пустая строка");
                     return null;
                 }
 
                 String[] newLineColumns = newLine.split(" ");
 
                 if (newLineColumns.length < 2) {
-                    System.out.println("В файле меньше 2х столбцов");
+                    System.out.println("В файле \""  + file.getName() + "\" меньше 2х столбцов");
                     return null;
                 }
 
@@ -76,14 +77,17 @@ public class task2 {
 
                     points.add(new Point(xCoordinates, yCoordinates));
                 } catch (NumberFormatException e) {
-                    System.out.println("Некорректное значение в поле файла");
+                    System.out.println("Некорректное значение в поле файла \"" + file.getName() + "\"");
                     return null;
                 }
             }
 
             scanner.close();
-        } catch (IOException e) {
-            System.out.println("Ошибка чтения файла");
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл \"" + file.getName() + "\" по указанному пути не найден");
+            return null;
+        } catch (Exception e) {
+            System.out.println("Ошибка чтения файла \"" + file.getName() + "\"");
             return null;
         }
 

@@ -1,5 +1,5 @@
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class task3 {
@@ -25,7 +25,7 @@ public class task3 {
         File[] listOfFiles = folder.listFiles();
 
         if (listOfFiles == null) {
-            System.out.println("Каталог пуст");
+            System.out.println("Каталог \"" + pathToFolder + "\" пуст");
             return true;
         } else if (listOfFiles.length < 5) {
             System.out.println("В каталоге должно быть не менее 5 файлов");
@@ -37,7 +37,7 @@ public class task3 {
             File file = new File(pathToFolder + File.separator + fileName);
 
             if (!file.exists()) {
-                System.out.println("В каталоге не найден файл: " + fileName);
+                System.out.println("В каталоге не найден файл: \"" + file.getName() + "\"");
                 return true;
             }
         }
@@ -84,7 +84,7 @@ public class task3 {
             Scanner scanner = new Scanner(file);
 
             if (!scanner.hasNext()) {
-                System.out.println("Файл " + file.getName() + " пуст");
+                System.out.println("Файл \"" + file.getName() + "\" пуст");
                 return null;
             }
 
@@ -92,7 +92,7 @@ public class task3 {
                 String newLine = scanner.nextLine();
 
                 if (newLine.isEmpty()) {
-                    System.out.println("В файле " + file.getName() + " пустая строка");
+                    System.out.println("В файле \""  + file.getName() + "\" пустая строка");
                     return null;
                 }
 
@@ -100,19 +100,22 @@ public class task3 {
                     double averageLengthField = Double.parseDouble(newLine);
                     inputData.add(averageLengthField);
                 } catch (NumberFormatException e) {
-                    System.out.println("Некорректное значение в поле файла " + file.getName());
+                    System.out.println("Некорректное значение в поле файла \"" + file.getName() + "\"");
                     return null;
                 }
             }
 
             if (inputData.size() != 16) {
-                System.out.println("Количество интервалов в файле " + file.getName() + " не равно 16");
+                System.out.println("Количество интервалов в файле \"" + file.getName() + "\" не равно 16");
                 return null;
             }
 
             scanner.close();
-        } catch (IOException e) {
-            System.out.println("Ошибка чтения файла " + file.getName());
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл \"" + file.getName() + "\" по указанному пути не найден");
+            return null;
+        } catch (Exception e) {
+            System.out.println("Ошибка чтения файла \"" + file.getName() + "\"");
             return null;
         }
 
